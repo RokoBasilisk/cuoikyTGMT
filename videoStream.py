@@ -2,6 +2,8 @@ import cv2
 from PIL import Image
 from PIL import ImageTk
 import tkinter
+import sys
+from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 import dlib
 from run import hogDetectFaces
@@ -24,6 +26,10 @@ class videoStream:
     CollectionItem = []
     CollectionIndex = []
 
+    def on_closing(self):
+        if messagebox.askokcancel("QUIT", "Do you want to quit?"):
+            sys.exit()
+
     def __init__(self):
         self.ventana = tkinter.Tk()
         self.ventana.title('Face Detect')
@@ -34,6 +40,7 @@ class videoStream:
         #init camera
         self.camera = cv2.VideoCapture(0)
         self.AddLayout()
+        self.ventana.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.ventana.mainloop()
     def onMode(self):
         self.Mode = True
